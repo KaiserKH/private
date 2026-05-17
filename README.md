@@ -192,3 +192,26 @@ curl -s http://localhost:4000/health
 ```
 
 If any of the commands above fail, check `server/.env` values and that the MySQL container is running.
+
+## Latest Database Run Notes
+This section records the most recent local run, including the SQL import issue and the exact fix.
+
+- I recreated the MySQL database locally as `kaizu_chats` and imported the latest `schema.sql` into a clean MySQL 8.4 container.
+- The first import attempt failed because the database header was placed in the wrong position in the SQL file.
+- I fixed the SQL export by moving the database block to the top of the file, keeping these lines first:
+
+```sql
+CREATE DATABASE IF NOT EXISTS `kaizu_chats` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE `kaizu_chats`;
+```
+
+- I verified the final schema import with a clean container and confirmed the SQL file imports successfully.
+- I started the backend and frontend locally and confirmed the app was running at `http://localhost:4000` and `http://localhost:5173`.
+- I created and verified a local test account through the live API during this run.
+
+## Latest Actions
+- Created a fresh local MySQL container and imported the current `schema.sql`.
+- Verified the backend health endpoint returned `{"success":true,"status":"ok"}`.
+- Created a real test user through `POST /api/auth/register`.
+- Logged in with the same credentials to verify the account works.
+- Kept the SQL export and Prisma SQL copy in sync after the import fix.
