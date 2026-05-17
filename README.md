@@ -80,9 +80,17 @@ npm run build
 If you run into issues, please open an issue or ask for help.
 
 ## Performed Actions
-- Added a root-level `schema.sql` export for MySQL setup.
-- Kept the Prisma source schema and SQL export in `server/prisma/`.
-- Generated a local `server/.env` with default development credentials and secrets.
-- Verified the backend by starting the server and checking `GET /health`.
+- Added a root-level `schema.sql` export for MySQL setup and kept the Prisma copy in `server/prisma/schema.sql`.
+- Installed project dependencies with `npm install` and generated the Prisma client with `npm run prisma:generate` in the server workspace.
+- Pulled and started a local MySQL Docker container for development, then imported the schema into the `kaizu_chats` database.
+- Created a local `server/.env` with development defaults and generated secrets for JWT, cookies, and CSRF.
+- Updated `.gitignore` so local secrets like `server/.env` stay out of git.
+- Verified the backend by starting the server and checking `GET /health` returned `{"success":true,"status":"ok"}`.
 - Verified the frontend by starting the Vite dev server locally.
-- Updated ignore rules so local secrets stay out of git.
+- Committed and pushed the repo updates to GitHub on `main`.
+
+## What I Changed
+- Added a root `schema.sql` file for easier MySQL database creation.
+- Refreshed the Prisma SQL export in `server/prisma/schema.sql`.
+- Updated the README setup steps and added this activity log.
+- Kept local credentials and environment values out of version control.
