@@ -32,7 +32,15 @@ JWT_ACCESS_EXPIRES_IN=15m
 JWT_REFRESH_EXPIRES_IN=30d
 ```
 
-3. Generate Prisma client and prepare the database
+3. Create a `.env` file for the client:
+
+```bash
+cat > client/.env << 'EOF'
+VITE_API_URL=http://localhost:4000/api
+EOF
+```
+
+4. Generate Prisma client and prepare the database
 
 - If you want Prisma to create the schema automatically and you have a running MySQL instance pointed by `DATABASE_URL`:
 
@@ -49,7 +57,7 @@ npx prisma migrate dev --name init
 mysql -u root -p kaizu_chats < server/prisma/schema.sql
 ```
 
-4. Start the server and client (concurrently)
+5. Start the server and client (concurrently)
 
 From the repository root you can run both:
 
