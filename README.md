@@ -42,7 +42,7 @@ npx prisma generate
 npx prisma migrate dev --name init
 ```
 
-- If you prefer to apply the SQL directly, there's a generated SQL file at `server/prisma/schema.sql`. Import it into your MySQL server (for example using `mysql` CLI or a GUI):
+- If you prefer to apply the SQL directly, there's a generated SQL file at the repository root (`schema.sql`). A copy is also kept at `server/prisma/schema.sql`. Import it into your MySQL server (for example using `mysql` CLI or a GUI):
 
 ```bash
 # from project root
