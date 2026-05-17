@@ -78,3 +78,11 @@ npm run build
 - Prisma schema is in `server/prisma/schema.prisma`. A generated SQL export is at `server/prisma/schema.sql` if you prefer native SQL.
 
 If you run into issues, please open an issue or ask for help.
+
+## Performed Actions
+- Added a root-level `schema.sql` export for MySQL setup.
+- Kept the Prisma source schema and SQL export in `server/prisma/`.
+- Generated a local `server/.env` with default development credentials and secrets.
+- Verified the backend by starting the server and checking `GET /health`.
+- Verified the frontend by starting the Vite dev server locally.
+- Updated ignore rules so local secrets stay out of git.

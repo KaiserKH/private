@@ -33,8 +33,7 @@ CREATE TABLE `User` (
 -- CreateTable
 CREATE TABLE `Role` (
     `id` VARCHAR(191) NOT NULL,
-    `name` ENUM('SUPER_ADMIN', 'ADMIN', 'MODERATOR', 'VERIFIED_USER', 'PREMIUM_U
-SER', 'NORMAL_USER') NOT NULL,
+    `name` ENUM('SUPER_ADMIN', 'ADMIN', 'MODERATOR', 'VERIFIED_USER', 'PREMIUM_USER', 'NORMAL_USER') NOT NULL,
     `description` VARCHAR(191) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
@@ -61,8 +60,7 @@ CREATE TABLE `RolePermission` (
     `roleId` VARCHAR(191) NOT NULL,
     `permissionId` VARCHAR(191) NOT NULL,
 
-    UNIQUE INDEX `RolePermission_roleId_permissionId_key`(`roleId`, `permissionI
-d`),
+    UNIQUE INDEX `RolePermission_roleId_permissionId_key`(`roleId`, `permissionId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -117,15 +115,13 @@ CREATE TABLE `FriendRequest` (
     `id` VARCHAR(191) NOT NULL,
     `senderId` VARCHAR(191) NOT NULL,
     `receiverId` VARCHAR(191) NOT NULL,
-    `status` ENUM('PENDING', 'ACCEPTED', 'REJECTED', 'CANCELLED', 'BLOCKED') NOT
- NULL DEFAULT 'PENDING',
+    `status` ENUM('PENDING', 'ACCEPTED', 'REJECTED', 'CANCELLED', 'BLOCKED') NOT NULL DEFAULT 'PENDING',
     `message` VARCHAR(191) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
     INDEX `FriendRequest_receiverId_status_idx`(`receiverId`, `status`),
-    UNIQUE INDEX `FriendRequest_senderId_receiverId_key`(`senderId`, `receiverId
-`),
+    UNIQUE INDEX `FriendRequest_senderId_receiverId_key`(`senderId`, `receiverId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -134,14 +130,13 @@ CREATE TABLE `Friendship` (
     `id` VARCHAR(191) NOT NULL,
     `userOneId` VARCHAR(191) NOT NULL,
     `userTwoId` VARCHAR(191) NOT NULL,
-    `status` ENUM('PENDING', 'ACCEPTED', 'REJECTED', 'CANCELLED', 'BLOCKED') NOT
- NULL DEFAULT 'ACCEPTED',
+    `status` ENUM('PENDING', 'ACCEPTED', 'REJECTED', 'CANCELLED', 'BLOCKED') NOT NULL DEFAULT 'ACCEPTED',
     `favoriteForOne` BOOLEAN NOT NULL DEFAULT false,
     `favoriteForTwo` BOOLEAN NOT NULL DEFAULT false,
     `mutedUntil` DATETIME(3) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
-    
+
     INDEX `Friendship_userTwoId_status_idx`(`userTwoId`, `status`),
     UNIQUE INDEX `Friendship_userOneId_userTwoId_key`(`userOneId`, `userTwoId`),
     PRIMARY KEY (`id`)
@@ -175,8 +170,7 @@ CREATE TABLE `UserRelationshipTag` (
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
-    UNIQUE INDEX `UserRelationshipTag_userId_targetUserId_relationshipTagId_key`
-(`userId`, `targetUserId`, `relationshipTagId`),
+    UNIQUE INDEX `UserRelationshipTag_userId_targetUserId_relationshipTagId_key`(`userId`, `targetUserId`, `relationshipTagId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -188,8 +182,7 @@ CREATE TABLE `BlockedUser` (
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
     INDEX `BlockedUser_blockedUserId_idx`(`blockedUserId`),
-    UNIQUE INDEX `BlockedUser_blockerId_blockedUserId_key`(`blockerId`, `blocked
-UserId`),
+    UNIQUE INDEX `BlockedUser_blockerId_blockedUserId_key`(`blockerId`, `blockedUserId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -212,11 +205,9 @@ CREATE TABLE `ConversationParticipant` (
     `lastReadAt` DATETIME(3) NULL,
     `isPinned` BOOLEAN NOT NULL DEFAULT false,
     `archivedAt` DATETIME(3) NULL,
-    
-    INDEX `ConversationParticipant_userId_archivedAt_idx`(`userId`, `archivedAt`
-),
-    UNIQUE INDEX `ConversationParticipant_conversationId_userId_key`(`conversati
-onId`, `userId`),
+
+    INDEX `ConversationParticipant_userId_archivedAt_idx`(`userId`, `archivedAt`),
+    UNIQUE INDEX `ConversationParticipant_conversationId_userId_key`(`conversationId`, `userId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -226,8 +217,7 @@ CREATE TABLE `Message` (
     `conversationId` VARCHAR(191) NOT NULL,
     `senderId` VARCHAR(191) NOT NULL,
     `recipientId` VARCHAR(191) NULL,
-    `type` ENUM('TEXT', 'IMAGE', 'VIDEO', 'FILE', 'VOICE_NOTE', 'SYSTEM') NOT NU
-LL DEFAULT 'TEXT',
+    `type` ENUM('TEXT', 'IMAGE', 'VIDEO', 'FILE', 'VOICE_NOTE', 'SYSTEM') NOT NULL DEFAULT 'TEXT',
     `content` TEXT NOT NULL,
     `replyToId` VARCHAR(191) NULL,
     `isEdited` BOOLEAN NOT NULL DEFAULT false,
@@ -250,8 +240,7 @@ CREATE TABLE `MessageReaction` (
     `emoji` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
-    UNIQUE INDEX `MessageReaction_messageId_userId_emoji_key`(`messageId`, `user
-Id`, `emoji`),
+    UNIQUE INDEX `MessageReaction_messageId_userId_emoji_key`(`messageId`, `userId`, `emoji`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -275,16 +264,14 @@ CREATE TABLE `Media` (
 CREATE TABLE `Notification` (
     `id` VARCHAR(191) NOT NULL,
     `userId` VARCHAR(191) NOT NULL,
-    `type` ENUM('MESSAGE', 'FRIEND_REQUEST', 'ADMIN_ACTIVITY', 'SYSTEM') NOT NUL
-L,
+    `type` ENUM('MESSAGE', 'FRIEND_REQUEST', 'ADMIN_ACTIVITY', 'SYSTEM') NOT NULL,
     `title` VARCHAR(191) NOT NULL,
     `body` TEXT NOT NULL,
     `data` JSON NULL,
     `isRead` BOOLEAN NOT NULL DEFAULT false,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
-    INDEX `Notification_userId_isRead_createdAt_idx`(`userId`, `isRead`, `create
-dAt`),
+    INDEX `Notification_userId_isRead_createdAt_idx`(`userId`, `isRead`, `createdAt`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -301,4 +288,182 @@ CREATE TABLE `Setting` (
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
--- (file continues)
+    UNIQUE INDEX `Setting_userId_key`(`userId`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `AdminActivityLog` (
+    `id` VARCHAR(191) NOT NULL,
+    `actorId` VARCHAR(191) NOT NULL,
+    `targetUserId` VARCHAR(191) NULL,
+    `action` VARCHAR(191) NOT NULL,
+    `category` VARCHAR(191) NOT NULL,
+    `details` JSON NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+
+    INDEX `AdminActivityLog_targetUserId_createdAt_idx`(`targetUserId`, `createdAt`),
+    INDEX `AdminActivityLog_actorId_createdAt_idx`(`actorId`, `createdAt`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `ModerationAction` (
+    `id` VARCHAR(191) NOT NULL,
+    `actorId` VARCHAR(191) NOT NULL,
+    `targetUserId` VARCHAR(191) NULL,
+    `action` VARCHAR(191) NOT NULL,
+    `reason` VARCHAR(191) NULL,
+    `details` JSON NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+
+    INDEX `ModerationAction_targetUserId_createdAt_idx`(`targetUserId`, `createdAt`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `FeatureToggle` (
+    `id` VARCHAR(191) NOT NULL,
+    `featureKey` VARCHAR(191) NOT NULL,
+    `scope` VARCHAR(191) NOT NULL DEFAULT 'global',
+    `roleId` VARCHAR(191) NULL,
+    `userId` VARCHAR(191) NULL,
+    `enabled` BOOLEAN NOT NULL DEFAULT true,
+    `metadata` JSON NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+
+    INDEX `FeatureToggle_featureKey_scope_idx`(`featureKey`, `scope`),
+    INDEX `FeatureToggle_userId_idx`(`userId`),
+    INDEX `FeatureToggle_roleId_idx`(`roleId`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Call` (
+    `id` VARCHAR(191) NOT NULL,
+    `callerId` VARCHAR(191) NOT NULL,
+    `calleeId` VARCHAR(191) NOT NULL,
+    `type` ENUM('VOICE', 'VIDEO') NOT NULL,
+    `status` ENUM('RINGING', 'ACTIVE', 'ENDED', 'MISSED', 'REJECTED') NOT NULL DEFAULT 'RINGING',
+    `startedAt` DATETIME(3) NULL,
+    `endedAt` DATETIME(3) NULL,
+    `signaling` JSON NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+
+    INDEX `Call_callerId_createdAt_idx`(`callerId`, `createdAt`),
+    INDEX `Call_calleeId_createdAt_idx`(`calleeId`, `createdAt`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `CallHistory` (
+    `id` VARCHAR(191) NOT NULL,
+    `userId` VARCHAR(191) NOT NULL,
+    `callId` VARCHAR(191) NOT NULL,
+    `status` ENUM('RINGING', 'ACTIVE', 'ENDED', 'MISSED', 'REJECTED') NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+
+    INDEX `CallHistory_userId_createdAt_idx`(`userId`, `createdAt`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- AddForeignKey
+ALTER TABLE `RolePermission` ADD CONSTRAINT `RolePermission_roleId_fkey` FOREIGN KEY (`roleId`) REFERENCES `Role`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `RolePermission` ADD CONSTRAINT `RolePermission_permissionId_fkey` FOREIGN KEY (`permissionId`) REFERENCES `Permission`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `UserRole` ADD CONSTRAINT `UserRole_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `UserRole` ADD CONSTRAINT `UserRole_roleId_fkey` FOREIGN KEY (`roleId`) REFERENCES `Role`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Session` ADD CONSTRAINT `Session_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `UserDevice` ADD CONSTRAINT `UserDevice_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `FriendRequest` ADD CONSTRAINT `FriendRequest_senderId_fkey` FOREIGN KEY (`senderId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `FriendRequest` ADD CONSTRAINT `FriendRequest_receiverId_fkey` FOREIGN KEY (`receiverId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Friendship` ADD CONSTRAINT `Friendship_userOneId_fkey` FOREIGN KEY (`userOneId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Friendship` ADD CONSTRAINT `Friendship_userTwoId_fkey` FOREIGN KEY (`userTwoId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `UserRelationshipTag` ADD CONSTRAINT `UserRelationshipTag_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `UserRelationshipTag` ADD CONSTRAINT `UserRelationshipTag_targetUserId_fkey` FOREIGN KEY (`targetUserId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `UserRelationshipTag` ADD CONSTRAINT `UserRelationshipTag_relationshipTagId_fkey` FOREIGN KEY (`relationshipTagId`) REFERENCES `RelationshipTag`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `BlockedUser` ADD CONSTRAINT `BlockedUser_blockerId_fkey` FOREIGN KEY (`blockerId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `BlockedUser` ADD CONSTRAINT `BlockedUser_blockedUserId_fkey` FOREIGN KEY (`blockedUserId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `ConversationParticipant` ADD CONSTRAINT `ConversationParticipant_conversationId_fkey` FOREIGN KEY (`conversationId`) REFERENCES `Conversation`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `ConversationParticipant` ADD CONSTRAINT `ConversationParticipant_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Message` ADD CONSTRAINT `Message_conversationId_fkey` FOREIGN KEY (`conversationId`) REFERENCES `Conversation`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Message` ADD CONSTRAINT `Message_senderId_fkey` FOREIGN KEY (`senderId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Message` ADD CONSTRAINT `Message_recipientId_fkey` FOREIGN KEY (`recipientId`) REFERENCES `User`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `MessageReaction` ADD CONSTRAINT `MessageReaction_messageId_fkey` FOREIGN KEY (`messageId`) REFERENCES `Message`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `MessageReaction` ADD CONSTRAINT `MessageReaction_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Media` ADD CONSTRAINT `Media_ownerId_fkey` FOREIGN KEY (`ownerId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Media` ADD CONSTRAINT `Media_messageId_fkey` FOREIGN KEY (`messageId`) REFERENCES `Message`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Notification` ADD CONSTRAINT `Notification_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Setting` ADD CONSTRAINT `Setting_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `AdminActivityLog` ADD CONSTRAINT `AdminActivityLog_actorId_fkey` FOREIGN KEY (`actorId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `ModerationAction` ADD CONSTRAINT `ModerationAction_actorId_fkey` FOREIGN KEY (`actorId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `FeatureToggle` ADD CONSTRAINT `FeatureToggle_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `FeatureToggle` ADD CONSTRAINT `FeatureToggle_roleId_fkey` FOREIGN KEY (`roleId`) REFERENCES `Role`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Call` ADD CONSTRAINT `Call_callerId_fkey` FOREIGN KEY (`callerId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Call` ADD CONSTRAINT `Call_calleeId_fkey` FOREIGN KEY (`calleeId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `CallHistory` ADD CONSTRAINT `CallHistory_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
