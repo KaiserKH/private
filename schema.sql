@@ -1,3 +1,7 @@
+-- Database
+CREATE DATABASE IF NOT EXISTS `kaizu_chats` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE `kaizu_chats`;
+
 CREATE TABLE `User` (
     `id` VARCHAR(191) NOT NULL,
     `email` VARCHAR(191) NULL,
@@ -29,11 +33,6 @@ CREATE TABLE `User` (
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
--- Database
-CREATE DATABASE IF NOT EXISTS `kaizu_chats` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE `kaizu_chats`;
-
--- CreateTable
 -- CreateTable
 CREATE TABLE `Role` (
     `id` VARCHAR(191) NOT NULL,
