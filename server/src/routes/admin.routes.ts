@@ -16,23 +16,23 @@ adminRouter.get("/dashboard", requireAuth, requirePermission("admin:dashboard"),
 }));
 
 adminRouter.get("/logs/:userId", requireAuth, requirePermission("admin:logs"), asyncHandler(async (req, res) => {
-  const logs = await getAdminLogsForUser(req.params.userId);
+  const logs = await getAdminLogsForUser(String(req.params.userId));
   res.json({ success: true, logs });
 }));
 
 adminRouter.post("/users/:userId/suspend", requireAuth, requirePermission("admin:moderate"), csrfGuard, validate({ body: z.object({ suspended: z.boolean().default(true), reason: z.string().optional() }) }), asyncHandler(async (req, res) => {
-  const user = await suspendUser(req.user!.id, req.params.userId, req.body.suspended, req.body.reason);
+  const user = await suspendUser(req.user!.id, String(req.params.userId), req.body.suspended, req.body.reason);
   res.json({ success: true, user });
 }));
 
 adminRouter.post("/users/:userId/ban", requireAuth, requirePermission("admin:moderate"), csrfGuard, validate({ body: z.object({ banned: z.boolean().default(true), reason: z.string().optional() }) }), asyncHandler(async (req, res) => {
-  const user = await banUser(req.user!.id, req.params.userId, req.body.banned, req.body.reason);
+  const user = await banUser(req.user!.id, String(req.params.userId), req.body.banned, req.body.reason);
   res.json({ success: true, user });
 }));
 
 adminRouter.post("/users/:userId/reset-password", requireAuth, requirePermission("admin:moderate"), csrfGuard, validate({ body: z.object({ password: z.string().min(8) }) }), asyncHandler(async (req, res) => {
   const passwordHash = await hashSecret(req.body.password);
-  const user = await resetPasswordForUser(req.user!.id, req.params.userId, passwordHash);
+  const user = await resetPasswordForUser(req.user!.id, String(req.params.userId), passwordHash);
   res.json({ success: true, user });
 }));
 

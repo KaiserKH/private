@@ -14,7 +14,7 @@ messageRouter.get("/conversations", requireAuth, asyncHandler(async (req, res) =
 }));
 
 messageRouter.get("/conversations/:conversationId/messages", requireAuth, asyncHandler(async (req, res) => {
-  const messages = await listMessages(req.params.conversationId, typeof req.query.cursor === "string" ? req.query.cursor : undefined);
+  const messages = await listMessages(String(req.params.conversationId), typeof req.query.cursor === "string" ? req.query.cursor : undefined);
   res.json({ success: true, messages });
 }));
 
@@ -41,26 +41,26 @@ messageRouter.post(
 );
 
 messageRouter.patch("/:messageId", requireAuth, csrfGuard, validate({ body: z.object({ content: z.string().min(1) }) }), asyncHandler(async (req, res) => {
-  const record = await editMessage(req.params.messageId, req.user!.id, req.body.content, req.user!.isAdmin);
+  const record = await editMessage(String(req.params.messageId), req.user!.id, req.body.content, req.user!.isAdmin);
   res.json({ success: true, message: record });
 }));
 
 messageRouter.delete("/:messageId", requireAuth, csrfGuard, asyncHandler(async (req, res) => {
-  const record = await deleteMessageForEveryone(req.params.messageId, req.user!.id, req.user!.isAdmin);
+  const record = await deleteMessageForEveryone(String(req.params.messageId), req.user!.id, req.user!.isAdmin);
   res.json({ success: true, message: record });
 }));
 
 messageRouter.delete("/:messageId/self", requireAuth, csrfGuard, asyncHandler(async (req, res) => {
-  const record = await deleteMessageForSelf(req.params.messageId, req.user!.id);
+  const record = await deleteMessageForSelf(String(req.params.messageId), req.user!.id);
   res.json({ success: true, message: record });
 }));
 
 messageRouter.post("/:messageId/reactions", requireAuth, csrfGuard, validate({ body: z.object({ emoji: z.string().min(1) }) }), asyncHandler(async (req, res) => {
-  const record = await reactToMessage(req.params.messageId, req.user!.id, req.body.emoji);
+  const record = await reactToMessage(String(req.params.messageId), req.user!.id, req.body.emoji);
   res.status(201).json({ success: true, reaction: record });
 }));
 
 messageRouter.post("/conversations/:conversationId/seen", requireAuth, csrfGuard, asyncHandler(async (req, res) => {
-  const record = await markConversationSeen(req.params.conversationId, req.user!.id);
+  const record = await markConversationSeen(String(req.params.conversationId), req.user!.id);
   res.json({ success: true, participant: record });
 }));

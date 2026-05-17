@@ -12,7 +12,7 @@ notificationRouter.get("/me", requireAuth, asyncHandler(async (req, res) => {
 }));
 
 notificationRouter.patch("/:notificationId/read", requireAuth, csrfGuard, asyncHandler(async (req, res) => {
-  const notification = await markNotificationRead(req.user!.id, req.params.notificationId);
+  const notification = await markNotificationRead(req.user!.id, String(req.params.notificationId));
   res.json({ success: true, notification });
 }));
 

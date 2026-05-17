@@ -19,6 +19,6 @@ callRouter.post("/start", requireAuth, csrfGuard, validate({ body: z.object({ ca
 }));
 
 callRouter.patch("/:callId/status", requireAuth, csrfGuard, validate({ body: z.object({ status: z.enum(["ACTIVE", "ENDED", "MISSED", "REJECTED"]) }) }), asyncHandler(async (req, res) => {
-  const call = await updateCallStatus(req.params.callId, req.body.status);
+  const call = await updateCallStatus(String(req.params.callId), req.body.status);
   res.json({ success: true, call });
 }));

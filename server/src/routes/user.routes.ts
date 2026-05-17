@@ -13,7 +13,7 @@ userRouter.get("/search", requireAuth, asyncHandler(async (req, res) => {
 }));
 
 userRouter.get("/:userId", requireAuth, asyncHandler(async (req, res) => {
-  const profile = await getProfile(req.params.userId);
+  const profile = await getProfile(String(req.params.userId));
   if (!profile) return res.status(404).json({ success: false, message: "User not found" });
   res.json({ success: true, user: profile });
 }));

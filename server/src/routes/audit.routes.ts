@@ -12,6 +12,6 @@ auditRouter.get("/me", requireAuth, asyncHandler(async (req, res) => {
 }));
 
 auditRouter.delete("/:logId", requireAuth, csrfGuard, asyncHandler(async (req, res) => {
-  const log = await deleteUserAdminLog(req.user!.id, req.params.logId);
+  const log = await deleteUserAdminLog(req.user!.id, String(req.params.logId));
   res.json({ success: true, log });
 }));

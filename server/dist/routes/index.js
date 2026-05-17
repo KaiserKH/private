@@ -1,0 +1,11 @@
+export { authRouter } from "./auth.routes.js";
+export { userRouter } from "./user.routes.js";
+export { friendshipRouter } from "./friendship.routes.js";
+export { messageRouter } from "./message.routes.js";
+export { adminRouter } from "./admin.routes.js";
+export { settingsRouter } from "./settings.routes.js";
+export { auditRouter } from "./audit.routes.js";
+export { notificationRouter } from "./notification.routes.js";
+export { permissionRouter } from "./permission.routes.js";
+export { uploadRouter } from "./upload.routes.js";
+export { callRouter } from "./call.routes.js";

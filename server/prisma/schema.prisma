@@ -120,11 +120,11 @@ model User {
   callsReceived        Call[]                   @relation("CallCallee")
   callHistory          CallHistory[]
 
-  relationshipTags     UserRelationshipTag[]
-
   relationshipTagsFrom UserRelationshipTag[] @relation("UserTags")
 
   relationshipTagsTo   UserRelationshipTag[] @relation("TargetUserTags")
+
+  userRoles            UserRole[]
 
   featureOverrides     FeatureToggle[]
 
@@ -138,6 +138,7 @@ model Role {
   description String?
   permissions RolePermission[]
   users       UserRole[]
+  featureToggles FeatureToggle[]
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
 }
@@ -423,6 +424,9 @@ model FeatureToggle {
   metadata   Json?
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
+
+  user       User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role       Role?    @relation(fields: [roleId], references: [id], onDelete: Cascade)
 
   @@index([featureKey, scope])
   @@index([userId])
