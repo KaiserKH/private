@@ -94,3 +94,101 @@ If you run into issues, please open an issue or ask for help.
 - Refreshed the Prisma SQL export in `server/prisma/schema.sql`.
 - Updated the README setup steps and added this activity log.
 - Kept local credentials and environment values out of version control.
+
+## Commands & Actions I Ran (ordered)
+Below are the exact commands I executed while preparing and verifying the project locally, with a short purpose for each.
+
+- Check Docker is available:
+
+```bash
+docker --version
+```
+
+- Check MySQL client availability (may not be present in environment):
+
+```bash
+mysql --version
+```
+
+- Install workspace dependencies:
+
+```bash
+npm install
+```
+
+- Build server to surface TypeScript errors (first run failed; used to iterate fixes):
+
+```bash
+npm run build --workspace=server
+```
+
+- Build client (Vite + TypeScript):
+
+```bash
+npm run build --workspace=client
+```
+
+- Generate SQL export from Prisma datamodel (produces `schema.sql`):
+
+```bash
+# from /workspaces/private/server
+npx prisma migrate diff --from-empty --to-schema-datamodel=prisma/schema.prisma --script > ../schema.sql
+cp ../schema.sql prisma/schema.sql
+```
+
+- Generate strong secrets for local dev (example using OpenSSL):
+
+```bash
+ACCESS=$(openssl rand -hex 32)
+REFRESH=$(openssl rand -hex 32)
+COOKIE=$(openssl rand -hex 32)
+CSRF=$(openssl rand -hex 32)
+```
+
+- Create local `server/.env` (edited with generated secrets):
+
+```bash
+cp server/.env.example server/.env
+# edit server/.env and paste generated secrets
+```
+
+- Start a local MySQL container for development:
+
+```bash
+docker run -d --name kaizu-mysql -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=kaizu_chats -p 3306:3306 mysql:8.4
+```
+
+- Import the generated SQL schema into the running MySQL container:
+
+```bash
+# from repo root
+docker exec -i kaizu-mysql mysql -uroot -ppassword kaizu_chats < schema.sql
+```
+
+- Generate Prisma client (inside `server`):
+
+```bash
+cd server
+npx prisma generate
+```
+
+- Start the backend server (from repo root):
+
+```bash
+npm run start --workspace=server
+```
+
+- Start the client dev server (Vite):
+
+```bash
+npm run dev --workspace=client
+```
+
+- Quick health check (successful):
+
+```bash
+curl -s http://localhost:4000/health
+# -> {"success":true,"status":"ok"}
+```
+
+If any of the commands above fail, check `server/.env` values and that the MySQL container is running.
